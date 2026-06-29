@@ -13,7 +13,7 @@ const services = [
     title: "Criação de Websites",
     description:
       "Sites modernos, rápidos e 100% responsivos. Do portfólio institucional ao e-commerce completo, construídos com as melhores tecnologias do mercado.",
-    features: ["Design responsivo", "Alta performance", "SEO otimizado", "CMS integrado"],
+    features: ["Design responsivo", "SEO orientado", "Velocidade máxima", "CMS integrado"],
     tags: ["Next.js", "React", "Tailwind"],
     gradient: "from-purple-brand to-purple-neon",
     tag: "Web",
@@ -27,7 +27,7 @@ const services = [
     title: "Aplicativos Mobile",
     description:
       "Apps iOS e Android sob medida com experiências nativas e fluidas. Colocamos o seu negócio na palma da mão dos seus clientes.",
-    features: ["iOS & Android", "UI nativa", "Notificações push", "Offline-first"],
+    features: ["iOS & Android", "UI/UX nativo", "Push notifications", "Offline-ready"],
     tags: ["React Native", "Flutter", "Expo"],
     gradient: "from-purple-neon to-[#c77dff]",
     tag: "Mobile",
@@ -41,8 +41,8 @@ const services = [
     title: "Apps Desktop",
     description:
       "Sistemas desktop para Windows robustos e personalizados. Softwares que otimizam a operação interna do seu negócio com interface profissional.",
-    features: ["Windows nativo", "Instalador próprio", "Atualizações OTA", "DB local"],
-    tags: ["Electron", "Tauri", "WPF"],
+    features: ["Windows & macOS", "Instaladores nativos", "Integrações locais", "Alta performance"],
+    tags: ["Electron", ".NET", "Tauri"],
     gradient: "from-[#c77dff] to-[#e0aaff]",
     tag: "Desktop",
   },
@@ -55,8 +55,8 @@ const services = [
     title: "Automações",
     description:
       "Processos automáticos que economizam tempo e dinheiro. Bots, integrações entre ferramentas e fluxos inteligentes que trabalham enquanto você dorme.",
-    features: ["Integração de APIs", "Bots & scripts", "Relatórios auto", "Redução de custos"],
-    tags: ["Python", "Node.js", "n8n"],
+    features: ["Integração de APIs", "Bots & Crawlers", "Fluxos de dados", "Relatórios & alertas"],
+    tags: ["Python", "Node.js", "Zapier"],
     gradient: "from-[#e0aaff] to-purple-brand",
     tag: "Automação",
   },

@@ -53,7 +53,7 @@ export default function Values() {
           className="text-center mb-16"
         >
           <span className="text-purple-neon text-sm font-semibold tracking-widest uppercase mb-3 block">
-            Nossos pilares
+            Nossos valores
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
             Nossos <span className="gradient-text">Valores</span>
