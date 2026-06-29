@@ -7,10 +7,13 @@ import Values from "./components/Values";
 import Portfolio from "./components/Portfolio";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import GlobalBackground from "./components/BackgroundSystem";
 
 export default function Home() {
   return (
     <>
+      {/* Fixed ambient multi-layer background — sits under all sections */}
+      <GlobalBackground />
       <Navbar />
       <main>
         <Hero />

@@ -71,6 +71,18 @@ export default function Process() {
       {/* Base background */}
       <div className="absolute inset-0" style={{ backgroundColor: "#07040D" }} />
 
+      {/* ── Section transitions ── */}
+      <div className="absolute top-0 left-0 right-0 h-32 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, #05020A, transparent)" }} />
+      <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+        style={{ background: "linear-gradient(to top, #05020A, transparent)" }} />
+
+      {/* ── Extra depth orbs ── */}
+      <div className="ambient-safe absolute top-0 right-0 w-[400px] h-[400px] pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(109,40,217,0.07) 0%, transparent 70%)", filter: "blur(80px)", animation: "glow-breathe 14s ease-in-out infinite 2s", willChange: "transform, opacity" }} />
+      <div className="ambient-safe absolute bottom-0 left-0 w-[350px] h-[350px] pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(88,28,135,0.06) 0%, transparent 70%)", filter: "blur(70px)", animation: "glow-breathe 11s ease-in-out infinite 7s", willChange: "transform, opacity" }} />
+
       {/* Subtle gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60" />
 
