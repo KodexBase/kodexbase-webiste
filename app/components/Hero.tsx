@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 interface Particle {
@@ -249,7 +250,6 @@ export default function Hero() {
 
   return (
     <section
-      id="hero"
       className="relative min-h-screen flex items-center overflow-hidden pt-[68px]"
       aria-label="Seção principal"
     >
@@ -360,15 +360,16 @@ export default function Hero() {
                 </div>
               </a>
 
-              <button
-                onClick={() => document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" })}
+              <Link
+                href="/portfolio"
+                prefetch
                 className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-white text-base glass border border-[rgba(170,120,255,0.2)] hover:border-[rgba(170,120,255,0.45)] transition-all duration-300"
               >
                 Ver portfólio
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4 group-hover:translate-x-0.5 transition-transform">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
-              </button>
+              </Link>
             </motion.div>
 
             {/* Tech logos */}

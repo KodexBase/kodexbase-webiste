@@ -21,7 +21,7 @@ export default function Portfolio() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="portfolio" className="py-28 px-6 relative overflow-hidden">
+    <section className="py-28 px-6 relative overflow-hidden">
       {/* ── Base ── */}
       <div className="absolute inset-0" style={{ backgroundColor: "#0B0714" }} />
 

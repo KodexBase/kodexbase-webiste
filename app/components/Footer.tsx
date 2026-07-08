@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import KodexIcon from "./KodexIcon";
 
@@ -7,19 +8,19 @@ const footerLinks = [
   {
     title: "Serviços",
     links: [
-      { label: "Websites", href: "#servicos" },
-      { label: "Apps Mobile", href: "#servicos" },
-      { label: "Apps Desktop", href: "#servicos" },
-      { label: "Automações", href: "#servicos" },
+      { label: "Websites", href: "/servicos" },
+      { label: "Apps Mobile", href: "/servicos" },
+      { label: "Apps Desktop", href: "/servicos" },
+      { label: "Automações", href: "/servicos" },
     ],
   },
   {
     title: "Empresa",
     links: [
-      { label: "Processo", href: "#processo" },
-      { label: "Valores", href: "#valores" },
-      { label: "Portfólio", href: "#portfolio" },
-      { label: "Contato", href: "#contato" },
+      { label: "Processo", href: "/processo" },
+      { label: "Valores", href: "/valores" },
+      { label: "Portfólio", href: "/portfolio" },
+      { label: "Contato", href: "/contato" },
     ],
   },
 ];
@@ -53,11 +54,6 @@ const socialLinks = [
     ),
   },
 ];
-
-function scrollTo(href: string) {
-  const el = document.querySelector(href);
-  if (el) el.scrollIntoView({ behavior: "smooth" });
-}
 
 export default function Footer() {
   return (
@@ -137,20 +133,18 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="md:col-span-2">
-            <motion.button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              whileHover={{ scale: 1.02 }}
-              className="flex items-center gap-3 mb-4 focus:outline-none"
-            >
-              <KodexIcon size={36} showBackground={false} className="opacity-80" />
-              <div>
-                <div className="text-base font-bold tracking-tight">
-                  <span className="text-white/90">Kodex</span>
-                  <span className="text-purple-accent">Base</span>
+            <Link href="/" className="flex items-center gap-3 mb-4 focus:outline-none">
+              <motion.div whileHover={{ scale: 1.02 }} className="flex items-center gap-3">
+                <KodexIcon size={36} showBackground={false} className="opacity-80" />
+                <div>
+                  <div className="text-base font-bold tracking-tight">
+                    <span className="text-white/90">Kodex</span>
+                    <span className="text-purple-accent">Base</span>
+                  </div>
+                  <div className="text-[9px] tracking-[0.22em] text-text-muted/50 font-medium uppercase">Full Stack Development</div>
                 </div>
-                <div className="text-[9px] tracking-[0.22em] text-text-muted/50 font-medium uppercase">Full Stack Development</div>
-              </div>
-            </motion.button>
+              </motion.div>
+            </Link>
             <p className="text-sm text-text-muted leading-relaxed max-w-xs mb-5">
               Desenvolvemos software sob medida com foco em resultado real, transparência total e qualidade de ponta em cada entrega.
             </p>
@@ -178,12 +172,13 @@ export default function Footer() {
               <ul className="flex flex-col gap-2.5">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <button
-                      onClick={() => scrollTo(link.href)}
+                    <Link
+                      href={link.href}
+                      prefetch
                       className="text-sm text-text-muted hover:text-white transition-colors duration-200 hover:translate-x-0.5 inline-flex transition-transform"
                     >
                       {link.label}
-                    </button>
+                    </Link>
                   </li>
                 ))}
               </ul>

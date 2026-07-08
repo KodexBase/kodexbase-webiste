@@ -1,15 +1,17 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import KodexIcon from "./KodexIcon";
 
 const navLinks = [
-  { label: "Serviços", href: "#servicos" },
-  { label: "Processo", href: "#processo" },
-  { label: "Valores", href: "#valores" },
-  { label: "Portfólio", href: "#portfolio" },
-  { label: "Contato", href: "#contato" },
+  { label: "Serviços", href: "/servicos" },
+  { label: "Processo", href: "/processo" },
+  { label: "Valores", href: "/valores" },
+  { label: "Portfólio", href: "/portfolio" },
+  { label: "Contato", href: "/contato" },
 ];
 
 function MagneticButton({ children, className, href }: { children: React.ReactNode; className: string; href: string }) {
@@ -45,29 +47,14 @@ function MagneticButton({ children, className, href }: { children: React.ReactNo
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
+  const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 30);
-
-      const sections = navLinks.map((l) => l.href.slice(1));
-      let current = "";
-      for (const id of sections) {
-        const el = document.getElementById(id);
-        if (el && window.scrollY >= el.offsetTop - 120) current = id;
-      }
-      setActiveSection(current);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 30);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const handleNav = (href: string) => {
-    setMenuOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
+  }, [pathname]);
 
   return (
     <>
@@ -83,33 +70,30 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 h-[68px] flex items-center justify-between">
           {/* Logo */}
-          <motion.button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2.5 focus:outline-none group"
-            aria-label="Ir ao topo"
-          >
-            <div className="relative">
-              <div className="absolute inset-0 rounded-xl bg-purple-accent/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <KodexIcon size={34} showBackground={false} className="relative flex-shrink-0 opacity-80 group-hover:opacity-100 transition-opacity" />
-            </div>
-            <div className="leading-none">
-              <span className="text-[15px] font-bold tracking-tight">
-                <span className="text-white/90 group-hover:text-white transition-colors">Kodex</span>
-                <span className="text-purple-accent">Base</span>
-              </span>
-            </div>
-          </motion.button>
+          <Link href="/" className="flex items-center gap-2.5 focus:outline-none group" aria-label="Ir para a página inicial">
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex items-center gap-2.5">
+              <div className="relative">
+                <div className="absolute inset-0 rounded-xl bg-purple-accent/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <KodexIcon size={34} showBackground={false} className="relative flex-shrink-0 opacity-80 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <div className="leading-none">
+                <span className="text-[15px] font-bold tracking-tight">
+                  <span className="text-white/90 group-hover:text-white transition-colors">Kodex</span>
+                  <span className="text-purple-accent">Base</span>
+                </span>
+              </div>
+            </motion.div>
+          </Link>
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-1" role="navigation" aria-label="Main navigation">
             {navLinks.map((link) => {
-              const isActive = activeSection === link.href.slice(1);
+              const isActive = pathname === link.href;
               return (
-                <button
+                <Link
                   key={link.href}
-                  onClick={() => handleNav(link.href)}
+                  href={link.href}
+                  prefetch
                   className="relative px-4 py-2 text-sm font-medium transition-colors duration-200 rounded-lg group"
                   aria-current={isActive ? "page" : undefined}
                 >
@@ -124,7 +108,7 @@ export default function Navbar() {
                     />
                   )}
                   <span className="absolute inset-0 rounded-lg bg-white/0 group-hover:bg-white/[0.05] transition-colors duration-200" />
-                </button>
+                </Link>
               );
             })}
           </nav>
@@ -178,18 +162,29 @@ export default function Navbar() {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="fixed top-[68px] left-3 right-3 z-40 glass rounded-2xl border border-[rgba(170,120,255,0.15)] py-3 px-2 md:hidden"
           >
-            {navLinks.map((link, i) => (
-              <motion.button
-                key={link.href}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.05 }}
-                onClick={() => handleNav(link.href)}
-                className="w-full text-left px-4 py-3.5 text-sm font-medium text-text-muted hover:text-white hover:bg-white/[0.06] rounded-xl transition-all duration-200"
-              >
-                {link.label}
-              </motion.button>
-            ))}
+            {navLinks.map((link, i) => {
+              const isActive = pathname === link.href;
+              return (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                >
+                  <Link
+                    href={link.href}
+                    prefetch
+                    onClick={() => setMenuOpen(false)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`block w-full text-left px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-200 ${
+                      isActive ? "text-white bg-white/[0.06]" : "text-text-muted hover:text-white hover:bg-white/[0.06]"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
+              );
+            })}
             <div className="px-2 pt-2 pb-1">
               <a
                 href="https://wa.me/5527997644821"
