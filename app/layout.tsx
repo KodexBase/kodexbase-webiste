@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import GlobalBackground from "./components/BackgroundSystem";
+import PageTransition from "./components/PageTransition";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kodexbase.dev"),
@@ -56,7 +60,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" className="scroll-smooth">
+    <html lang="pt-BR">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -70,7 +74,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body className="antialiased" style={{ backgroundColor: "#05020A", color: "#fff" }}>
-        {children}
+        <GlobalBackground />
+        <Navbar />
+        <main>
+          <PageTransition>{children}</PageTransition>
+        </main>
+        <Footer />
       </body>
     </html>
   );

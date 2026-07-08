@@ -163,7 +163,7 @@ export default function Services() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section id="servicos" className="py-28 px-6 relative overflow-hidden">
+    <section className="py-28 px-6 relative overflow-hidden">
       <div className="absolute inset-0" style={{ backgroundColor: "#05020A" }} />
 
       {/* ── Section transitions ── */}

@@ -54,7 +54,7 @@ export default function Values() {
   const brandInView = useInView(brandRef, { once: true, margin: "-80px" });
 
   return (
-    <section id="valores" className="py-28 px-6 relative overflow-hidden">
+    <section className="py-28 px-6 relative overflow-hidden">
       <div className="absolute inset-0" style={{ backgroundColor: "#05020A" }} />
 
       {/* ── Section transitions ── */}

@@ -67,7 +67,7 @@ export default function Process() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section id="processo" className="relative py-24 px-6 overflow-hidden">
+    <section className="relative py-24 px-6 overflow-hidden">
       {/* Base background */}
       <div className="absolute inset-0" style={{ backgroundColor: "#07040D" }} />
 
