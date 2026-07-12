@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 
 const stats = [
   {
-    value: 15,
+    value: 7,
     suffix: "+",
     label: "Projetos entregues",
     sublabel: "com qualidade premium",
@@ -54,10 +54,9 @@ const stats = [
   },
 ];
 
-function CountUp({ target, suffix, active }: { target: number; suffix: string; active: boolean }) {
+function CountUp({ target, suffix }: { target: number; suffix: string }) {
   const [count, setCount] = useState(0);
   useEffect(() => {
-    if (!active) return;
     let frame = 0;
     const totalFrames = 80;
     const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
@@ -68,7 +67,7 @@ function CountUp({ target, suffix, active }: { target: number; suffix: string; a
       if (frame >= totalFrames) clearInterval(timer);
     }, 16);
     return () => clearInterval(timer);
-  }, [active, target]);
+  }, [target]);
 
   return <span>{count}{suffix}</span>;
 }
@@ -136,7 +135,7 @@ export default function Stats() {
 
               {/* Number */}
               <div className={`text-3xl sm:text-4xl font-black bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent mb-1 tabular-nums`}>
-                <CountUp target={stat.value} suffix={stat.suffix} active={isInView} />
+                <CountUp target={stat.value} suffix={stat.suffix} />
               </div>
 
               {/* Label */}

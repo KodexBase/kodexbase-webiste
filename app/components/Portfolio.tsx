@@ -11,9 +11,9 @@ const languages = [
 ];
 
 const highlights = [
-  { label: "Commits", value: "500+", icon: "⬡" },
-  { label: "Repositórios", value: "20+", icon: "📦" },
-  { label: "Projetos ativos", value: "5", icon: "🔥" },
+  { label: "Commits", value: "40+", icon: "⬡" },
+  { label: "Repositórios", value: "7+", icon: "📦" },
+  { label: "Projetos ativos", value: "3", icon: "🔥" },
 ];
 
 export default function Portfolio() {

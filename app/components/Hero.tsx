@@ -304,7 +304,7 @@ export default function Hero() {
                     <svg key={i} viewBox="0 0 24 24" fill="#A855F7" className="w-2.5 h-2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                   ))}
                 </span>
-                <span>15+ projetos entregues com qualidade premium</span>
+                <span>7+ projetos entregues com qualidade premium</span>
               </div>
             </motion.div>
 
