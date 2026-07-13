@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useRef, useState } from "react";
+import SectionAmbient from "./SectionAmbient";
 
 const steps = [
   {
@@ -62,12 +63,282 @@ const steps = [
   },
 ];
 
+/* ─── Timeline connector — draws in, then energy travels continuously ── */
+function Timeline({ isInView }: { isInView: boolean }) {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <div className="hidden lg:block relative mb-0">
+      <div className="absolute top-[2.6rem] left-[12.5%] right-[12.5%] h-px pointer-events-none">
+        {/* Base line */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-neon/30 to-transparent" />
+
+        {/* Glow line — soft pulse */}
+        <div
+          className="ambient-safe absolute inset-0 blur-sm"
+          style={{
+            background: "linear-gradient(90deg, transparent 0%, rgba(157,78,221,0.5) 50%, transparent 100%)",
+            animation: "glow-breathe 5s ease-in-out infinite",
+          }}
+        />
+
+        {/* Draw-in progress line */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={isInView ? { scaleX: 1 } : {}}
+          transition={{ duration: 1.4, delay: 0.3, ease: "easeOut" }}
+          className="absolute inset-0 origin-left bg-gradient-to-r from-purple-brand via-purple-neon to-[#c77dff]"
+          style={{ opacity: 0.65 }}
+        />
+
+        {/* Traveling energy orb */}
+        <motion.div
+          className="absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 1.6, duration: 0.5 }}
+        >
+          <motion.div
+            className="absolute left-0 top-1/2"
+            animate={shouldReduceMotion ? {} : { x: ["0%", "100%"] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "linear", delay: 1.7 }}
+          >
+            <div className="relative -translate-x-1/2 -translate-y-1/2">
+              {/* trailing energy tail */}
+              <div
+                className="absolute right-full top-1/2 -translate-y-1/2 w-12 h-px"
+                style={{ background: "linear-gradient(90deg, transparent, rgba(199,125,255,0.65))" }}
+              />
+              <div
+                className="w-2 h-2 rounded-full bg-white"
+                style={{ boxShadow: "0 0 10px 3px rgba(199,125,255,0.9), 0 0 26px 8px rgba(157,78,221,0.45)" }}
+              />
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Luminous points aligned with each step */}
+        {steps.map((step, i) => (
+          <motion.div
+            key={i}
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+            style={{ left: `${(i / (steps.length - 1)) * 100}%` }}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ delay: 0.5 + i * 0.25, duration: 0.4, ease: "easeOut" }}
+          >
+            <div
+              className="ambient-safe w-2 h-2 rounded-full"
+              style={{
+                background: step.glow,
+                boxShadow: `0 0 10px ${step.glow}`,
+                animation: `glow-breathe 3s ease-in-out infinite ${i * 0.3}s`,
+              }}
+            />
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Single process card — glass, spotlight, halo, floating, hover ── */
+function ProcessCard({
+  step,
+  index,
+  isInView,
+  hovered,
+  onHoverStart,
+  onHoverEnd,
+}: {
+  step: (typeof steps)[number];
+  index: number;
+  isInView: boolean;
+  hovered: boolean;
+  onHoverStart: () => void;
+  onHoverEnd: () => void;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
+    el.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
+      className="relative"
+    >
+      {/* Subtle infinite float */}
+      <div
+        className="ambient-safe relative h-full"
+        style={{ animation: `float ${7 + index * 0.5}s ease-in-out infinite ${index * 0.4}s`, willChange: "transform" }}
+      >
+        {/* Halo behind card */}
+        <div
+          className="absolute left-1/2 top-1/2 rounded-full pointer-events-none transition-all duration-700 ease-out"
+          style={{
+            width: 260,
+            height: 260,
+            background: `radial-gradient(circle, ${step.glow}33 0%, transparent 70%)`,
+            filter: "blur(50px)",
+            opacity: hovered ? 0.9 : 0.4,
+            transform: `translate(-50%, -50%) scale(${hovered ? 1.2 : 1})`,
+          }}
+        />
+
+        <div
+          ref={cardRef}
+          onMouseMove={handleMouseMove}
+          onMouseEnter={onHoverStart}
+          onMouseLeave={onHoverEnd}
+          className="group relative rounded-2xl p-6 h-full flex flex-col overflow-hidden transition-all duration-500 ease-out hover:-translate-y-3 hover:scale-[1.015]"
+          style={{
+            background: "rgba(18,11,30,0.55)",
+            backdropFilter: "blur(20px) saturate(180%)",
+            WebkitBackdropFilter: "blur(20px) saturate(180%)",
+            border: hovered ? `1px solid ${step.glow}55` : "1px solid rgba(255,255,255,0.08)",
+            boxShadow: hovered
+              ? `0 20px 50px rgba(0,0,0,0.55), 0 0 40px ${step.glow}30, inset 0 1px 0 rgba(255,255,255,0.06)`
+              : "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)",
+          }}
+        >
+          {/* Mouse-tracking spotlight */}
+          <div
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+            style={{
+              background: `radial-gradient(220px circle at var(--spot-x, 50%) var(--spot-y, 50%), ${step.glow}22, transparent 70%)`,
+            }}
+          />
+
+          {/* Border shine sweep — runs only on hover */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
+            <div
+              className="absolute inset-0"
+              style={{
+                background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.07) 50%, transparent 60%)",
+                animation: "shimmer 1.8s linear infinite",
+                animationPlayState: hovered ? "running" : "paused",
+              }}
+            />
+          </div>
+
+          {/* Giant background number */}
+          <div
+            className="absolute -bottom-8 -right-3 font-black leading-[0.8] pointer-events-none select-none text-white/[0.035] group-hover:text-white/[0.07] transition-colors duration-500"
+            style={{ fontSize: "8.5rem" }}
+          >
+            {String(index + 1).padStart(4, "0")}
+          </div>
+
+          {/* Top gradient accent */}
+          <div
+            className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${step.color} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
+          />
+
+          {/* Content */}
+          <div className="relative z-10 flex flex-col h-full">
+            {/* Icon + number row */}
+            <div className="flex items-center justify-between mb-5">
+              {/* Icon badge — glass, neon border, energy ring */}
+              <div className="animated-border-box w-11 h-11 rounded-xl transition-transform duration-500 ease-out group-hover:rotate-6 group-hover:scale-110">
+                <div
+                  className="ambient-safe w-full h-full rounded-xl bg-[#0B0714] flex items-center justify-center text-white"
+                  style={{
+                    boxShadow: `inset 0 0 12px ${step.glow}40, 0 0 18px ${step.glow}45`,
+                    animation: `icon-breathe 4.5s ease-in-out infinite ${index * 0.3}s`,
+                  }}
+                >
+                  {step.icon}
+                </div>
+              </div>
+
+              {/* Step number */}
+              <span
+                className={`text-4xl font-black bg-gradient-to-br ${step.color} bg-clip-text text-transparent opacity-25 group-hover:opacity-50 transition-opacity duration-300 leading-none`}
+              >
+                {step.number}
+              </span>
+            </div>
+
+            {/* Title */}
+            <h3 className="text-base font-bold text-white mb-2">{step.title}</h3>
+
+            {/* Description */}
+            <p className="text-gray-400 text-sm leading-relaxed flex-1 mb-5">{step.description}</p>
+
+            {/* Tags */}
+            <div className="flex flex-wrap gap-1.5">
+              {step.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold border border-white/[0.08] group-hover:border-white/[0.18] transition-all duration-500"
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    boxShadow: hovered ? `0 0 12px ${step.glow}35` : "none",
+                  }}
+                >
+                  <span className={`bg-gradient-to-r ${step.color} bg-clip-text text-transparent`}>{tag}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─── Bottom progress bar — lights up the step under the cursor ── */
+function ProgressBar({ activeIndex, isInView }: { activeIndex: number | null; isInView: boolean }) {
+  return (
+    <motion.div
+      className="hidden lg:flex items-stretch gap-3 mt-14 max-w-4xl mx-auto"
+      initial={{ opacity: 0, y: 16 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.9 }}
+    >
+      {steps.map((step, i) => {
+        const active = activeIndex === i;
+        return (
+          <div key={i} className="flex-1 flex flex-col items-center gap-2.5">
+            <div className="relative w-full h-[3px] rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+              <div
+                className="absolute inset-0 origin-left rounded-full transition-transform duration-500 ease-out"
+                style={{
+                  transform: `scaleX(${active ? 1 : 0})`,
+                  background: `linear-gradient(90deg, ${step.glow}, #ffffff)`,
+                  boxShadow: active ? `0 0 14px ${step.glow}` : "none",
+                }}
+              />
+            </div>
+            <span
+              className="text-[10px] font-semibold uppercase tracking-wider transition-colors duration-500"
+              style={{ color: active ? "#fff" : "rgba(163,163,178,0.5)" }}
+            >
+              {step.title}
+            </span>
+          </div>
+        );
+      })}
+    </motion.div>
+  );
+}
+
 export default function Process() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [sectionEl, setSectionEl] = useState<HTMLElement | null>(null);
 
   return (
-    <section className="relative py-24 px-6 overflow-hidden">
+    <section ref={setSectionEl} className="relative py-24 px-6 overflow-hidden">
       {/* Base background */}
       <div className="absolute inset-0" style={{ backgroundColor: "#07040D" }} />
 
@@ -77,157 +348,59 @@ export default function Process() {
       <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
         style={{ background: "linear-gradient(to top, #05020A, transparent)" }} />
 
-      {/* ── Extra depth orbs ── */}
-      <div className="ambient-safe absolute top-0 right-0 w-[400px] h-[400px] pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(109,40,217,0.07) 0%, transparent 70%)", filter: "blur(80px)", animation: "glow-breathe 14s ease-in-out infinite 2s", willChange: "transform, opacity" }} />
-      <div className="ambient-safe absolute bottom-0 left-0 w-[350px] h-[350px] pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(88,28,135,0.06) 0%, transparent 70%)", filter: "blur(70px)", animation: "glow-breathe 11s ease-in-out infinite 7s", willChange: "transform, opacity" }} />
-
-      {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60" />
-
-      {/* Noise texture */}
-      <div
-        className="absolute inset-0 opacity-[0.035] pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundRepeat: "repeat",
-        }}
-      />
-
-      {/* Large purple glow blob — from JSON: #7B2EFF, 18% opacity, 900px */}
-      <div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
-        style={{
-          width: 900,
-          height: 900,
-          background: "radial-gradient(circle, rgba(123,46,255,0.18) 0%, transparent 70%)",
-          filter: "blur(60px)",
-        }}
-      />
+      {/* ── Rich, discreet background system: grid · bloom · shapes · particles · noise · vignette ── */}
+      <SectionAmbient isInView={isInView} sectionEl={sectionEl} />
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Header */}
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-20"
-        >
-          <span className="text-purple-neon text-xs font-bold tracking-[0.25em] uppercase mb-4 block">
+        <div ref={ref} className="text-center mb-20">
+          <motion.span
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-purple-neon text-xs font-bold tracking-[0.25em] uppercase mb-4 block"
+          >
             Nosso processo
-          </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.08 }}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4"
+          >
             Como <span className="gradient-text">trabalhamos</span>
-          </h2>
-          <p className="text-gray-400 max-w-xl mx-auto">
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.18 }}
+            className="text-gray-400 max-w-xl mx-auto"
+          >
             Um processo transparente do início ao fim. Cada etapa tem entregáveis
             claros e sua aprovação antes de avançar.
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
 
         {/* Timeline connector — desktop only */}
-        <div className="hidden lg:block relative mb-0">
-          <div className="absolute top-[2.6rem] left-[12.5%] right-[12.5%] h-px pointer-events-none">
-            {/* Base line */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-neon/30 to-transparent" />
-            {/* Glow line */}
-            <div
-              className="absolute inset-0 blur-sm"
-              style={{
-                background: "linear-gradient(90deg, transparent 0%, rgba(157,78,221,0.5) 50%, transparent 100%)",
-              }}
-            />
-            {/* Animated progress overlay */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={isInView ? { scaleX: 1 } : {}}
-              transition={{ duration: 1.4, delay: 0.3, ease: "easeOut" }}
-              className="absolute inset-0 origin-left bg-gradient-to-r from-purple-brand via-purple-neon to-[#c77dff]"
-              style={{ opacity: 0.6 }}
-            />
-          </div>
-        </div>
+        <Timeline isInView={isInView} />
 
         {/* Step cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {steps.map((step, i) => (
-            <motion.div
+            <ProcessCard
               key={i}
-              initial={{ opacity: 0, y: 40 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: i * 0.13 }}
-              className="group relative"
-            >
-              <div
-                className="relative rounded-2xl p-6 h-full flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1"
-                style={{
-                  background: "rgba(255,255,255,0.025)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                }}
-              >
-                {/* Top gradient accent */}
-                <div
-                  className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${step.color} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
-                />
-
-                {/* Hover glow */}
-                <div
-                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none"
-                  style={{
-                    background: `radial-gradient(ellipse at 50% 0%, ${step.glow}18 0%, transparent 65%)`,
-                  }}
-                />
-
-                {/* Step badge + icon row */}
-                <div className="flex items-center justify-between mb-5">
-                  {/* Icon badge */}
-                  <div
-                    className={`relative inline-flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br ${step.color} p-px`}
-                    style={{
-                      boxShadow: isInView ? `0 0 16px ${step.glow}55` : "none",
-                    }}
-                  >
-                    <div className="w-full h-full rounded-xl bg-[#07040D] flex items-center justify-center text-white">
-                      {step.icon}
-                    </div>
-                  </div>
-
-                  {/* Step number */}
-                  <span
-                    className={`text-4xl font-black bg-gradient-to-br ${step.color} bg-clip-text text-transparent opacity-25 group-hover:opacity-50 transition-opacity duration-300 leading-none`}
-                  >
-                    {step.number}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-base font-bold text-white mb-2">{step.title}</h3>
-
-                {/* Description */}
-                <p className="text-gray-400 text-sm leading-relaxed flex-1 mb-5">
-                  {step.description}
-                </p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1.5">
-                  {step.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-gradient-to-r ${step.color} bg-clip-text text-transparent border border-white/[0.08]`}
-                      style={{ background: "rgba(255,255,255,0.04)" }}
-                    >
-                      <span className={`bg-gradient-to-r ${step.color} bg-clip-text text-transparent`}>
-                        {tag}
-                      </span>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
+              step={step}
+              index={i}
+              isInView={isInView}
+              hovered={hoveredIndex === i}
+              onHoverStart={() => setHoveredIndex(i)}
+              onHoverEnd={() => setHoveredIndex((cur) => (cur === i ? null : cur))}
+            />
           ))}
         </div>
+
+        {/* Progress bar reacting to hover */}
+        <ProgressBar activeIndex={hoveredIndex} isInView={isInView} />
 
         {/* CTA — gradient style from JSON */}
         <motion.div

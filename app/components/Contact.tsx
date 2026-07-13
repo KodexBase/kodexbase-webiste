@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import SectionAmbient from "./SectionAmbient";
 
 interface FormData { name: string; email: string; subject: string; message: string; }
 type Status = "idle" | "loading" | "success" | "error";
@@ -51,6 +52,7 @@ export default function Contact() {
   const [form, setForm] = useState<FormData>({ name: "", email: "", subject: "", message: "" });
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [sectionEl, setSectionEl] = useState<HTMLElement | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
@@ -77,7 +79,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="py-28 px-6 relative overflow-hidden">
+    <section ref={setSectionEl} className="py-28 px-6 relative overflow-hidden">
       <div className="absolute inset-0" style={{ backgroundColor: "#05020A" }} />
 
       {/* ── Section transitions ── */}
@@ -86,27 +88,8 @@ export default function Contact() {
       <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
         style={{ background: "linear-gradient(to top, #0B0714, transparent)" }} />
 
-      {/* ── Split lighting ── */}
-      {/* Purple — right side (form) */}
-      <div className="ambient-safe absolute right-0 top-0 bottom-0 w-1/2 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 80% 70% at 100% 50%, rgba(109,40,217,0.10) 0%, transparent 70%)", animation: "glow-breathe 11s ease-in-out infinite", willChange: "transform, opacity" }} />
-      {/* Green — left side (WhatsApp) */}
-      <div className="ambient-safe absolute left-0 top-0 bottom-0 w-1/2 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 80% 70% at 0% 50%, rgba(16,185,129,0.06) 0%, transparent 70%)", animation: "glow-breathe 14s ease-in-out infinite 3s", willChange: "transform, opacity" }} />
-
-      {/* Center glow — enhanced */}
-      <div className="ambient-safe absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[800px] h-[800px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(123,47,190,0.09) 0%, transparent 70%)", filter: "blur(90px)", animation: "glow-breathe 9s ease-in-out infinite 1s", willChange: "transform, opacity" }}
-        />
-      </div>
-
-      {/* ── Noise ── */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        opacity: 0.02,
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")`,
-        backgroundRepeat: "repeat",
-      }} />
+      {/* ── Rich, discreet background system: grid · bloom · shapes · particles · noise · vignette ── */}
+      <SectionAmbient isInView={isInView} sectionEl={sectionEl} />
 
       {/* Top border */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[rgba(168,85,247,0.25)] to-transparent" />
@@ -142,6 +125,8 @@ export default function Contact() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="lg:col-span-3"
           >
+            {/* Subtle infinite float */}
+            <div className="ambient-safe" style={{ animation: "float 7.5s ease-in-out infinite", willChange: "transform" }}>
             <div className="rounded-2xl p-8 card-premium">
               <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -239,6 +224,7 @@ export default function Contact() {
                 </button>
               </form>
             </div>
+            </div>
           </motion.div>
 
           {/* Sidebar */}
@@ -249,6 +235,7 @@ export default function Contact() {
             className="lg:col-span-2 flex flex-col gap-5"
           >
             {/* Contact info */}
+            <div className="ambient-safe" style={{ animation: "float 7s ease-in-out infinite 0.2s", willChange: "transform" }}>
             <div className="rounded-2xl p-6 card-premium">
               <h3 className="text-sm font-bold text-white mb-5 flex items-center gap-2">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-purple-accent">
@@ -276,8 +263,10 @@ export default function Contact() {
                 ))}
               </div>
             </div>
+            </div>
 
             {/* WhatsApp CTA */}
+            <div className="ambient-safe" style={{ animation: "float 8s ease-in-out infinite 0.6s", willChange: "transform" }}>
             <a
               href="https://wa.me/5527997644821"
               target="_blank"
@@ -297,12 +286,15 @@ export default function Contact() {
                 Abrir WhatsApp
               </div>
             </a>
+            </div>
 
             {/* Response time */}
+            <div className="ambient-safe" style={{ animation: "float 6.5s ease-in-out infinite 1s", willChange: "transform" }}>
             <div className="rounded-2xl p-5 text-center card-premium">
               <div className="text-4xl font-black gradient-text mb-1">24h</div>
               <div className="text-sm font-semibold text-white mb-0.5">Tempo médio de resposta</div>
               <div className="text-xs text-text-muted">Garantido em dias úteis</div>
+            </div>
             </div>
           </motion.div>
         </div>

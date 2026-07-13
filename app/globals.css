@@ -260,6 +260,31 @@ body {
   50%       { transform: translate(1.5%, 0.8%); }
 }
 
+/* Gentle breathing scale for icon badges */
+@keyframes icon-breathe {
+  0%,  100% { transform: scale(1);    }
+  50%       { transform: scale(1.05); }
+}
+
+/* Slow rotation + faint vertical drift for outlined background shapes */
+@keyframes shape-drift {
+  0%   { transform: translateY(0)    rotate(0deg);   }
+  50%  { transform: translateY(-8px) rotate(180deg); }
+  100% { transform: translateY(0)    rotate(360deg); }
+}
+
+/* Extremely faint opacity glimmer for micro-particles (3%–10%) */
+@keyframes particle-glimmer {
+  0%,  100% { opacity: 0.03; }
+  50%       { opacity: 0.10; }
+}
+
+/* Barely-there positional drift, paired with particle-glimmer (different property, no conflict) */
+@keyframes particle-drift {
+  0%,  100% { transform: translate(0, 0);      }
+  50%       { transform: translate(6px, -14px); }
+}
+
 /* prefers-reduced-motion: freeze all ambient animations */
 @media (prefers-reduced-motion: reduce) {
   .ambient-safe {

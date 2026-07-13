@@ -2,6 +2,7 @@
 
 import { motion, useInView, type Variants } from "framer-motion";
 import { useRef, useState } from "react";
+import SectionAmbient from "./SectionAmbient";
 
 const services = [
   {
@@ -93,65 +94,75 @@ function ServiceCard({
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="group relative rounded-2xl overflow-hidden flex flex-col cursor-default card-premium"
-      style={{ minHeight: 400 }}
+      className="h-full"
     >
-      {/* Spotlight effect */}
+      {/* Subtle infinite float */}
       <div
-        className="absolute inset-0 pointer-events-none transition-opacity duration-500"
-        style={{
-          opacity: spotlight.active ? 1 : 0,
-          background: `radial-gradient(320px circle at ${spotlight.x}px ${spotlight.y}px, ${service.glowColor}, transparent 65%)`,
-        }}
-      />
+        className="ambient-safe h-full"
+        style={{ animation: `float ${7 + index * 0.5}s ease-in-out infinite ${index * 0.4}s`, willChange: "transform" }}
+      >
+        <div
+          ref={cardRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          className="group relative rounded-2xl overflow-hidden flex flex-col cursor-default card-premium h-full"
+          style={{ minHeight: 400 }}
+        >
+          {/* Spotlight effect */}
+          <div
+            className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+            style={{
+              opacity: spotlight.active ? 1 : 0,
+              background: `radial-gradient(320px circle at ${spotlight.x}px ${spotlight.y}px, ${service.glowColor}, transparent 65%)`,
+            }}
+          />
 
-      {/* Gradient top border */}
-      <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${service.gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-300`} />
+          {/* Gradient top border */}
+          <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${service.gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-300`} />
 
-      {/* Inner glow on hover */}
-      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{ background: `radial-gradient(ellipse at 50% 0%, ${service.glowColor} 0%, transparent 60%)` }}
-      />
+          {/* Inner glow on hover */}
+          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+            style={{ background: `radial-gradient(ellipse at 50% 0%, ${service.glowColor} 0%, transparent 60%)` }}
+          />
 
-      <div className="relative z-10 flex flex-col h-full p-6">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-5">
-          <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${service.gradient} p-px`}>
-            <div className="w-full h-full rounded-xl flex items-center justify-center text-white" style={{ background: "#120B1E" }}>
-              {service.icon}
+          <div className="relative z-10 flex flex-col h-full p-6">
+            {/* Header */}
+            <div className="flex items-start justify-between mb-5">
+              <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${service.gradient} p-px`}>
+                <div className="w-full h-full rounded-xl flex items-center justify-center text-white" style={{ background: "#120B1E" }}>
+                  {service.icon}
+                </div>
+              </div>
+              <span className="text-[9px] font-bold tracking-[0.2em] uppercase px-2.5 py-1 rounded-full border"
+                style={{ color: service.accentColor, borderColor: `${service.accentColor}30`, background: `${service.accentColor}0D` }}>
+                {service.tag}
+              </span>
+            </div>
+
+            {/* Content */}
+            <h3 className="text-lg font-bold text-white mb-2.5">{service.title}</h3>
+            <p className="text-sm text-text-muted leading-relaxed flex-1 mb-5">{service.description}</p>
+
+            {/* Features */}
+            <ul className="space-y-1.5 mb-5">
+              {service.features.map((feat, j) => (
+                <li key={j} className="flex items-center gap-2 text-xs text-text-muted">
+                  <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 bg-gradient-to-r ${service.gradient}`} />
+                  {feat}
+                </li>
+              ))}
+            </ul>
+
+            {/* Tech tags */}
+            <div className="flex flex-wrap gap-1.5 pt-4 border-t border-[rgba(255,255,255,0.05)]">
+              {service.tags.map((tag) => (
+                <span key={tag}
+                  className="px-2.5 py-0.5 rounded-md text-[10px] font-semibold text-text-muted border border-[rgba(255,255,255,0.07)] bg-white/[0.03] hover:border-[rgba(170,120,255,0.3)] hover:text-white transition-all duration-200">
+                  {tag}
+                </span>
+              ))}
             </div>
           </div>
-          <span className="text-[9px] font-bold tracking-[0.2em] uppercase px-2.5 py-1 rounded-full border"
-            style={{ color: service.accentColor, borderColor: `${service.accentColor}30`, background: `${service.accentColor}0D` }}>
-            {service.tag}
-          </span>
-        </div>
-
-        {/* Content */}
-        <h3 className="text-lg font-bold text-white mb-2.5">{service.title}</h3>
-        <p className="text-sm text-text-muted leading-relaxed flex-1 mb-5">{service.description}</p>
-
-        {/* Features */}
-        <ul className="space-y-1.5 mb-5">
-          {service.features.map((feat, j) => (
-            <li key={j} className="flex items-center gap-2 text-xs text-text-muted">
-              <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 bg-gradient-to-r ${service.gradient}`} />
-              {feat}
-            </li>
-          ))}
-        </ul>
-
-        {/* Tech tags */}
-        <div className="flex flex-wrap gap-1.5 pt-4 border-t border-[rgba(255,255,255,0.05)]">
-          {service.tags.map((tag) => (
-            <span key={tag}
-              className="px-2.5 py-0.5 rounded-md text-[10px] font-semibold text-text-muted border border-[rgba(255,255,255,0.07)] bg-white/[0.03] hover:border-[rgba(170,120,255,0.3)] hover:text-white transition-all duration-200">
-              {tag}
-            </span>
-          ))}
         </div>
       </div>
     </motion.div>
@@ -161,9 +172,10 @@ function ServiceCard({
 export default function Services() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [sectionEl, setSectionEl] = useState<HTMLElement | null>(null);
 
   return (
-    <section className="py-28 px-6 relative overflow-hidden">
+    <section ref={setSectionEl} className="py-28 px-6 relative overflow-hidden">
       <div className="absolute inset-0" style={{ backgroundColor: "#05020A" }} />
 
       {/* ── Section transitions ── */}
@@ -172,29 +184,8 @@ export default function Services() {
       <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
         style={{ background: "linear-gradient(to top, #07040D, transparent)" }} />
 
-      {/* ── Animated orbs ── */}
-      <div className="ambient-safe absolute -top-40 right-1/4 w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(123,47,190,0.09) 0%, transparent 70%)", filter: "blur(80px)", animation: "glow-breathe 13s ease-in-out infinite", willChange: "transform, opacity" }} />
-      <div className="ambient-safe absolute bottom-0 left-1/4 w-[500px] h-[500px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(168,85,247,0.07) 0%, transparent 70%)", filter: "blur(70px)", animation: "glow-breathe 16s ease-in-out infinite 4s", willChange: "transform, opacity" }} />
-
-      {/* ── Grid behind cards ── */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `
-          linear-gradient(rgba(168,85,247,0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(168,85,247,0.03) 1px, transparent 1px)
-        `,
-        backgroundSize: "60px 60px",
-        WebkitMaskImage: "radial-gradient(ellipse 75% 60% at 50% 60%, black 10%, transparent 80%)",
-        maskImage: "radial-gradient(ellipse 75% 60% at 50% 60%, black 10%, transparent 80%)",
-      }} />
-
-      {/* ── Noise ── */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        opacity: 0.02,
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")`,
-        backgroundRepeat: "repeat",
-      }} />
+      {/* ── Rich, discreet background system: grid · bloom · shapes · particles · noise · vignette ── */}
+      <SectionAmbient isInView={isInView} sectionEl={sectionEl} />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}

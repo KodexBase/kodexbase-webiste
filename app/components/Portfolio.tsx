@@ -1,7 +1,8 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import SectionAmbient from "./SectionAmbient";
 
 const languages = [
   { name: "TypeScript", pct: 72, color: "#3178C6" },
@@ -19,9 +20,10 @@ const highlights = [
 export default function Portfolio() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [sectionEl, setSectionEl] = useState<HTMLElement | null>(null);
 
   return (
-    <section className="py-28 px-6 relative overflow-hidden">
+    <section ref={setSectionEl} className="py-28 px-6 relative overflow-hidden">
       {/* ── Base ── */}
       <div className="absolute inset-0" style={{ backgroundColor: "#0B0714" }} />
 
@@ -31,24 +33,10 @@ export default function Portfolio() {
       <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
         style={{ background: "linear-gradient(to top, #05020A, transparent)" }} />
 
-      {/* ── Glow orbs ── */}
-      <div className="ambient-safe absolute left-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(168,85,247,0.09) 0%, transparent 70%)", filter: "blur(90px)", animation: "glow-breathe 11s ease-in-out infinite", willChange: "transform, opacity" }} />
-      <div className="ambient-safe absolute right-0 top-1/3 w-[400px] h-[400px] pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%)", filter: "blur(80px)", animation: "glow-breathe 14s ease-in-out infinite 4s", willChange: "transform, opacity" }} />
-      <div className="ambient-safe absolute bottom-10 left-1/2 -translate-x-1/2 w-[500px] h-[300px] pointer-events-none"
-        style={{ background: "radial-gradient(ellipse, rgba(109,40,217,0.06) 0%, transparent 70%)", filter: "blur(60px)", animation: "glow-breathe 10s ease-in-out infinite 2s", willChange: "transform, opacity" }} />
+      {/* ── Rich, discreet background system: grid · bloom · shapes · particles · noise · vignette ── */}
+      <SectionAmbient isInView={isInView} sectionEl={sectionEl} />
 
-      {/* ── Dot pattern ── */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: "radial-gradient(circle, rgba(168,85,247,0.7) 1px, transparent 1px)",
-        backgroundSize: "32px 32px",
-        opacity: 0.025,
-        WebkitMaskImage: "radial-gradient(ellipse 70% 80% at 50% 50%, black 20%, transparent 75%)",
-        maskImage: "radial-gradient(ellipse 70% 80% at 50% 50%, black 20%, transparent 75%)",
-      }} />
-
-      {/* ── Circuit code decoration — inline SVG ── */}
+      {/* ── Circuit code decoration — inline SVG, unique to this section ── */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice" style={{ opacity: 0.7 }}>
         {/* Left rail */}
         <path d="M40,80 L40,520" stroke="rgba(168,85,247,0.06)" strokeWidth="0.7" fill="none" />
@@ -65,13 +53,6 @@ export default function Portfolio() {
         <circle cx="860" cy="160" r="2" fill="rgba(139,92,246,0.13)" />
         <circle cx="860" cy="360" r="2" fill="rgba(168,85,247,0.13)" />
       </svg>
-
-      {/* ── Noise ── */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        opacity: 0.022,
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")`,
-        backgroundRepeat: "repeat",
-      }} />
 
       {/* ── Top border ── */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[rgba(168,85,247,0.2)] to-transparent" />
@@ -104,8 +85,11 @@ export default function Portfolio() {
           initial={{ opacity: 0, y: 30, scale: 0.97 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="group relative rounded-2xl overflow-hidden card-premium mb-6"
+          className="mb-6"
         >
+          {/* Subtle infinite float */}
+          <div className="ambient-safe" style={{ animation: "float 7.5s ease-in-out infinite", willChange: "transform" }}>
+          <div className="group relative rounded-2xl overflow-hidden card-premium">
           {/* Gradient top border */}
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-brand via-purple-accent to-[#c77dff] opacity-80 group-hover:opacity-100 transition-opacity" />
 
@@ -175,6 +159,8 @@ export default function Portfolio() {
                 ))}
               </div>
             </div>
+          </div>
+          </div>
           </div>
         </motion.div>
 
