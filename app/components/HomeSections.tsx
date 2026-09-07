@@ -116,7 +116,7 @@ export default function HomeSections() {
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[.85fr_1.15fr]">
           <div className="rounded-3xl border border-purple-accent/20 bg-gradient-to-br from-purple-brand/15 to-transparent p-8">
             <Quote className="h-8 w-8 text-purple-accent" />
-            <blockquote className="mt-6 text-2xl font-semibold leading-snug text-white">“Começar cedo me permite evoluir junto com a empresa e transformar boas ideias em produtos que resolvem problemas.”</blockquote>
+            <blockquote className="mt-6 text-2xl font-semibold leading-snug text-white">“Sei que ainda tenho muito a aprender, mas começar tão cedo me permite evoluir junto com a empresa.”</blockquote>
             <p className="mt-6 text-sm text-text-muted">Murilo Miranda · Fundador da KodexBase</p>
           </div>
           <div className="flex flex-col justify-center">
