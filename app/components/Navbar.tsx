@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,36 +14,6 @@ const navLinks = [
   { label: "Sobre", href: "/sobre" },
   { label: "Contato", href: "/contato" },
 ];
-
-function MagneticButton({ children, className, href }: { children: React.ReactNode; className: string; href: string }) {
-  const ref = useRef<HTMLAnchorElement>(null);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const rect = ref.current!.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) * 0.25;
-    const y = (e.clientY - rect.top - rect.height / 2) * 0.25;
-    setPos({ x, y });
-  };
-
-  const handleMouseLeave = () => setPos({ x: 0, y: 0 });
-
-  return (
-    <motion.a
-      ref={ref}
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      animate={{ x: pos.x, y: pos.y }}
-      transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      className={className}
-    >
-      {children}
-    </motion.a>
-  );
-}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -116,15 +86,15 @@ export default function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
-            <MagneticButton
-              href="https://wa.me/5527997644821"
+            <Link
+              href="/diagnostico"
               className="relative overflow-hidden px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-purple-brand to-purple-accent hover:from-purple-accent hover:to-purple-brand transition-all duration-300 shadow-glow-sm hover:shadow-glow-purple shimmer"
             >
               <span className="relative z-10 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                Fale conosco
+                Diagnóstico gratuito
               </span>
-            </MagneticButton>
+            </Link>
           </div>
 
           {/* Mobile hamburger */}
@@ -188,14 +158,12 @@ export default function Navbar() {
             })}
             <div className="px-2 pt-2 pb-1">
               <a
-                href="https://wa.me/5527997644821"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/diagnostico"
                 onClick={() => setMenuOpen(false)}
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-purple-brand to-purple-accent text-white text-sm font-semibold"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                Fale conosco
+                Diagnóstico gratuito
               </a>
             </div>
           </motion.div>
