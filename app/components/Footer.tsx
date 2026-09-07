@@ -20,12 +20,22 @@ const footerLinks = [
       { label: "Processo", href: "/processo" },
       { label: "Valores", href: "/valores" },
       { label: "Portfólio", href: "/portfolio" },
+      { label: "Sobre", href: "/sobre" },
       { label: "Contato", href: "/contato" },
     ],
   },
 ];
 
 const socialLinks = [
+  {
+    label: "Instagram",
+    href: "https://instagram.com/kodexbase/",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-4 h-4">
+        <rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
   {
     label: "GitHub",
     href: "https://github.com/KodexBase",
@@ -141,12 +151,12 @@ export default function Footer() {
                     <span className="text-white/90">Kodex</span>
                     <span className="text-purple-accent">Base</span>
                   </div>
-                  <div className="text-[9px] tracking-[0.22em] text-text-muted/50 font-medium uppercase">Full Stack Development</div>
+                  <div className="text-[9px] tracking-[0.22em] text-text-muted/50 font-medium uppercase">Soluções digitais sob medida</div>
                 </div>
               </motion.div>
             </Link>
             <p className="text-sm text-text-muted leading-relaxed max-w-xs mb-5">
-              Desenvolvemos software sob medida com foco em resultado real, transparência total e qualidade de ponta em cada entrega.
+              Transformamos processos manuais e informações espalhadas em soluções digitais simples, úteis e preparadas para evoluir.
             </p>
             {/* Social */}
             <div className="flex items-center gap-2">

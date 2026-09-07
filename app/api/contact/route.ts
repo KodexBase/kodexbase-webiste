@@ -1,100 +1,80 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-export async function POST(req: NextRequest) {
-  try {
-    const { name, email, subject, message } = await req.json();
+const limits = { name: 80, email: 160, company: 120, projectType: 80, budget: 80, message: 3000 } as const;
 
-    if (!name || !email || !subject || !message) {
-      return NextResponse.json(
-        { error: "Todos os campos são obrigatórios." },
-        { status: 400 }
-      );
+function clean(value: unknown, limit: number) {
+  return typeof value === "string" ? value.trim().slice(0, limit) : "";
+}
+
+function escapeHtml(value: string) {
+  return value.replace(/[&<>'"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[character] || character));
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    if (!request.headers.get("content-type")?.includes("application/json")) {
+      return NextResponse.json({ error: "Formato de envio inválido." }, { status: 415 });
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: "Email inválido." },
-        { status: 400 }
-      );
+    const body = await request.json();
+    if (body.website) return NextResponse.json({ success: true });
+
+    const fields = {
+      name: clean(body.name, limits.name),
+      email: clean(body.email, limits.email).toLowerCase(),
+      company: clean(body.company, limits.company),
+      projectType: clean(body.projectType, limits.projectType),
+      budget: clean(body.budget, limits.budget),
+      message: clean(body.message, limits.message),
+    };
+
+    if (Object.values(fields).some((value) => !value)) {
+      return NextResponse.json({ error: "Preencha todos os campos obrigatórios." }, { status: 400 });
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) {
+      return NextResponse.json({ error: "Informe um email válido." }, { status: 400 });
     }
 
     const apiKey = process.env.RESEND_API_KEY;
     const destination = process.env.CONTACT_EMAIL;
-
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: "Configuração do servidor incompleta." },
-        { status: 500 }
-      );
+    if (!apiKey || !destination) {
+      console.error("Contact form environment variables are missing.");
+      return NextResponse.json({ error: "O formulário está temporariamente indisponível. Use o WhatsApp." }, { status: 503 });
     }
 
-    if (!destination) {
-      return NextResponse.json(
-        { error: "Configuração de email ausente no servidor." },
-        { status: 500 }
-      );
-    }
-
+    const safe = Object.fromEntries(Object.entries(fields).map(([key, value]) => [key, escapeHtml(value)])) as typeof fields;
     const resend = new Resend(apiKey);
-
     const { error } = await resend.emails.send({
       from: "KodexBase Website <onboarding@resend.dev>",
       to: destination,
-      replyTo: email,
-      subject: `[KodexBase] ${subject}`,
+      replyTo: fields.email,
+      subject: `[Novo diagnóstico] ${fields.company} — ${fields.projectType}`,
       html: `
-        <div style="font-family: Inter, sans-serif; background: #0a0a0a; color: #ffffff; padding: 40px; border-radius: 12px; max-width: 600px; margin: 0 auto;">
-          <div style="border-bottom: 2px solid #7B2FBE; padding-bottom: 20px; margin-bottom: 28px;">
-            <h1 style="color: #9D4EDD; font-size: 22px; margin: 0;">
-              Nova mensagem — KodexBase
-            </h1>
-          </div>
-
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-              <td style="padding: 10px 0; color: #888; width: 100px; vertical-align: top; font-size: 14px;">Nome</td>
-              <td style="padding: 10px 0; color: #fff; font-size: 14px;">${name}</td>
-            </tr>
-            <tr>
-              <td style="padding: 10px 0; color: #888; vertical-align: top; font-size: 14px;">Email</td>
-              <td style="padding: 10px 0; font-size: 14px;">
-                <a href="mailto:${email}" style="color: #9D4EDD; text-decoration: none;">${email}</a>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 10px 0; color: #888; vertical-align: top; font-size: 14px;">Assunto</td>
-              <td style="padding: 10px 0; color: #fff; font-size: 14px;">${subject}</td>
-            </tr>
+        <div style="font-family:Arial,sans-serif;max-width:640px;margin:auto;padding:32px;background:#0b0714;color:#fff;border-radius:16px">
+          <p style="color:#c77dff;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px">Novo contato pelo site</p>
+          <h1 style="font-size:24px;margin:10px 0 26px">Diagnóstico — ${safe.company}</h1>
+          <table style="width:100%;border-collapse:collapse;font-size:14px">
+            <tr><td style="padding:8px;color:#aaa">Nome</td><td style="padding:8px">${safe.name}</td></tr>
+            <tr><td style="padding:8px;color:#aaa">Email</td><td style="padding:8px">${safe.email}</td></tr>
+            <tr><td style="padding:8px;color:#aaa">Projeto</td><td style="padding:8px">${safe.projectType}</td></tr>
+            <tr><td style="padding:8px;color:#aaa">Investimento</td><td style="padding:8px">${safe.budget}</td></tr>
           </table>
-
-          <div style="margin-top: 24px; background: #1a0030; border-radius: 8px; padding: 20px; border-left: 3px solid #7B2FBE;">
-            <p style="color: #888; font-size: 12px; margin: 0 0 8px;">Mensagem</p>
-            <p style="color: #e0e0e0; font-size: 14px; line-height: 1.7; margin: 0; white-space: pre-wrap;">${message}</p>
+          <div style="margin-top:24px;padding:20px;background:#160d25;border-left:3px solid #a855f7;border-radius:8px">
+            <p style="margin:0 0 8px;color:#aaa;font-size:12px">Contexto enviado</p>
+            <p style="margin:0;white-space:pre-wrap;line-height:1.65">${safe.message}</p>
           </div>
-
-          <p style="margin-top: 28px; color: #555; font-size: 12px; text-align: center;">
-            KodexBase — Full Stack Development
-          </p>
-        </div>
-      `,
+        </div>`,
     });
 
     if (error) {
-      console.error("Resend error:", error);
-      return NextResponse.json(
-        { error: "Falha ao enviar o email. Tente novamente." },
-        { status: 500 }
-      );
+      console.error("Resend contact error:", error.name);
+      return NextResponse.json({ error: "Não foi possível enviar agora. Use o WhatsApp ou tente novamente." }, { status: 502 });
     }
 
-    return NextResponse.json({ success: true }, { status: 200 });
-  } catch (err) {
-    console.error("Contact API error:", err);
-    return NextResponse.json(
-      { error: "Erro interno. Tente novamente mais tarde." },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: "Não foi possível processar a mensagem." }, { status: 400 });
   }
 }

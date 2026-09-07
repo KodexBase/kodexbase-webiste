@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import Hero from "./components/Hero";
 import Stats from "./components/Stats";
+import HomeSections from "./components/HomeSections";
 
 export const metadata: Metadata = {
   title: "KodexBase — Software que transforma negócios",
   description:
-    "Desenvolvimento sob medida de software premium — websites, aplicativos mobile, desktop e automações. Do briefing ao produto final, com qualidade e transparência.",
+    "Transformamos planilhas, tarefas manuais e informações espalhadas em websites, sistemas e automações simples de usar.",
   openGraph: {
     title: "KodexBase — Software que transforma negócios",
     description:
-      "Desenvolvimento sob medida de software premium. Do briefing ao produto final com qualidade e transparência.",
+      "Transformamos processos manuais e informações espalhadas em soluções digitais simples de usar.",
   },
   twitter: {
     title: "KodexBase — Software que transforma negócios",
-    description: "Desenvolvimento sob medida — do briefing ao produto final.",
+    description: "Sistemas, websites e automações construídos em torno da realidade de cada negócio.",
   },
 };
 
@@ -22,6 +23,7 @@ export default function Home() {
     <>
       <Hero />
       <Stats />
+      <HomeSections />
     </>
   );
 }

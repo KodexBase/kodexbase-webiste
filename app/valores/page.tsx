@@ -4,15 +4,16 @@ import Values from "../components/Values";
 export const metadata: Metadata = {
   title: "Valores",
   description:
-    "Honestidade e entrega completa: prazos realistas, orçamento fixo, comunicação clara e o escopo combinado sempre 100% respeitado, sem cortes ou atalhos.",
+    "Conheça os princípios da KodexBase: transparência, escopo verificável, comunicação direta e simplicidade útil.",
   openGraph: {
     title: "Valores | KodexBase",
-    description: "Transparência total e entrega completa em cada projeto.",
+    description: "Transparência, critérios claros e responsabilidade em cada projeto.",
   },
   twitter: {
     title: "Valores | KodexBase",
     description: "Os valores que guiam cada entrega da KodexBase.",
   },
+  alternates: { canonical: "/valores" },
 };
 
 export default function ValoresPage() {

@@ -5,10 +5,10 @@ import { motion, useInView } from "framer-motion";
 
 const stats = [
   {
-    value: 7,
-    suffix: "+",
-    label: "Projetos entregues",
-    sublabel: "com qualidade premium",
+    value: 5,
+    suffix: "",
+    label: "Projetos para clientes",
+    sublabel: "concluídos e entregues",
     gradient: "from-purple-brand to-purple-accent",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5">
@@ -17,10 +17,10 @@ const stats = [
     ),
   },
   {
-    value: 100,
-    suffix: "%",
-    label: "Entregas completas",
-    sublabel: "escopo 100% respeitado",
+    value: 1,
+    suffix: " a 1",
+    label: "Acompanhamento direto",
+    sublabel: "do briefing à entrega",
     gradient: "from-purple-accent to-[#c77dff]",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5">
@@ -30,9 +30,9 @@ const stats = [
   },
   {
     value: 4,
-    suffix: "+",
-    label: "Plataformas",
-    sublabel: "web · mobile · desktop · automação",
+    suffix: "",
+    label: "Frentes de solução",
+    sublabel: "web · mobile · sistemas · automação",
     gradient: "from-[#c77dff] to-[#e0aaff]",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5">
@@ -44,7 +44,7 @@ const stats = [
     value: 24,
     suffix: "h",
     label: "Tempo de resposta",
-    sublabel: "média garantida",
+    sublabel: "em dias úteis",
     gradient: "from-[#e0aaff] to-purple-brand",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5">
