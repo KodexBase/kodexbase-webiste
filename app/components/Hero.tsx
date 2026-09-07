@@ -38,17 +38,17 @@ export default function Hero() {
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <a href="https://wa.me/5527997644821?text=Ol%C3%A1%2C%20quero%20um%20diagn%C3%B3stico%20inicial%20para%20minha%20empresa." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-brand to-purple-accent px-6 py-3.5 font-semibold text-white shadow-glow-sm transition hover:-translate-y-0.5 hover:shadow-glow-purple">
+            <Link href="/diagnostico" className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-brand to-purple-accent px-6 py-3.5 font-semibold text-white shadow-glow-sm transition hover:-translate-y-0.5 hover:shadow-glow-purple">
               <MessageCircle className="h-4 w-4" />
-              Solicitar diagnóstico inicial
-            </a>
+              Fazer diagnóstico gratuito
+            </Link>
             <Link href="/portfolio" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-6 py-3.5 font-semibold text-white transition hover:border-purple-accent/40 hover:bg-white/[0.07]">
               Ver projetos
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
-          <p className="mt-5 text-xs text-text-muted">Conversa inicial sem compromisso · Retorno em até 24 horas úteis</p>
+          <p className="mt-5 text-xs text-text-muted">Resultado imediato · Sem cadastro · Cerca de 2 minutos</p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, x: 28 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.12 }} className="relative">
