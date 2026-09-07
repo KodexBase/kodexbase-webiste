@@ -138,7 +138,7 @@ export default function HomeSections() {
             <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">Conte onde sua operação trava.</h2>
             <p className="mt-3 text-text-muted">Analisamos o cenário e indicamos uma primeira direção, mesmo que a melhor solução não seja construir um aplicativo completo.</p>
           </div>
-          <Link href="/contato" className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-6 py-3.5 font-bold text-[#0B0714] transition hover:-translate-y-0.5">Solicitar diagnóstico <ArrowRight className="h-4 w-4" /></Link>
+          <Link href="/diagnostico" className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-6 py-3.5 font-bold text-[#0B0714] transition hover:-translate-y-0.5">Fazer diagnóstico <ArrowRight className="h-4 w-4" /></Link>
         </div>
       </section>
     </>
