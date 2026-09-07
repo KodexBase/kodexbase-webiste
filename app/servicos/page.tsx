@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     title: "Serviços | KodexBase",
     description: "Websites, apps mobile, apps desktop e automações sob medida.",
   },
+  alternates: { canonical: "/servicos" },
 };
 
 export default function ServicosPage() {

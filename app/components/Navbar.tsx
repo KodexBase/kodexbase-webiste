@@ -11,6 +11,7 @@ const navLinks = [
   { label: "Processo", href: "/processo" },
   { label: "Valores", href: "/valores" },
   { label: "Portfólio", href: "/portfolio" },
+  { label: "Sobre", href: "/sobre" },
   { label: "Contato", href: "/contato" },
 ];
 
@@ -86,7 +87,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1" role="navigation" aria-label="Main navigation">
+          <nav className="hidden lg:flex items-center gap-1" role="navigation" aria-label="Navegação principal">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -114,7 +115,7 @@ export default function Navbar() {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-3">
             <MagneticButton
               href="https://wa.me/5527997644821"
               className="relative overflow-hidden px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-purple-brand to-purple-accent hover:from-purple-accent hover:to-purple-brand transition-all duration-300 shadow-glow-sm hover:shadow-glow-purple shimmer"
@@ -129,7 +130,7 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen((v) => !v)}
-            className="md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 focus:outline-none"
+            className="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 focus:outline-none"
             aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
             aria-expanded={menuOpen}
           >
@@ -160,7 +161,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -16, scale: 0.98 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed top-[68px] left-3 right-3 z-40 glass rounded-2xl border border-[rgba(170,120,255,0.15)] py-3 px-2 md:hidden"
+            className="fixed top-[68px] left-3 right-3 z-40 glass rounded-2xl border border-[rgba(170,120,255,0.15)] py-3 px-2 lg:hidden"
           >
             {navLinks.map((link, i) => {
               const isActive = pathname === link.href;

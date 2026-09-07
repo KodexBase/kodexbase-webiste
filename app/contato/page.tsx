@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     title: "Contato | KodexBase",
     description: "Entre em contato com a KodexBase.",
   },
+  alternates: { canonical: "/contato" },
 };
 
 export default function ContatoPage() {

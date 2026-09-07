@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     title: "Processo | KodexBase",
     description: "Nosso processo, do briefing à entrega com suporte.",
   },
+  alternates: { canonical: "/processo" },
 };
 
 export default function ProcessoPage() {

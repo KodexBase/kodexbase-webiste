@@ -1,191 +1,83 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import SectionAmbient from "./SectionAmbient";
+import { motion } from "framer-motion";
+import { ArrowUpRight, Code2, Leaf, Smartphone, Stethoscope, Zap } from "lucide-react";
 
-const languages = [
-  { name: "TypeScript", pct: 72, color: "#3178C6" },
-  { name: "JavaScript", pct: 15, color: "#F7DF1E" },
-  { name: "Python", pct: 8, color: "#FFD43B" },
-  { name: "CSS/HTML", pct: 5, color: "#E44D26" },
-];
-
-const highlights = [
-  { label: "Commits", value: "40+", icon: "⬡" },
-  { label: "Repositórios", value: "7+", icon: "📦" },
-  { label: "Projetos ativos", value: "3", icon: "🔥" },
+const projects = [
+  {
+    name: "Sakura Mobile Menu",
+    type: "Aplicativo mobile",
+    icon: Smartphone,
+    problem: "Tornar o cardápio acessível no celular e simplificar o início de pedidos pelo WhatsApp.",
+    solution: "Aplicativo Flutter com arquitetura em camadas, navegação direta e funcionamento sem backend obrigatório.",
+    stack: ["Flutter", "Dart", "BLoC"],
+    href: "https://github.com/KodexBase/Sakura_Mobile_Menu",
+  },
+  {
+    name: "Lumiar",
+    type: "Website para clínica",
+    icon: Stethoscope,
+    problem: "Apresentar uma clínica odontológica com clareza e facilitar o contato em qualquer dispositivo.",
+    solution: "Landing page leve, responsiva, acessível e construída sem dependências desnecessárias.",
+    stack: ["HTML", "CSS", "JavaScript"],
+    href: "https://github.com/KodexBase/Lumiar_website",
+  },
+  {
+    name: "PlantHealth AI",
+    type: "Monitoramento inteligente",
+    icon: Leaf,
+    problem: "Reunir dados de cultivo hidropônico e apoiar a identificação visual de alterações nas plantas.",
+    solution: "Aplicação integrada a sensores, Arduino e análise por imagem para acompanhar o ambiente de cultivo.",
+    stack: ["Flutter", "Arduino", "IA"],
+    href: "https://github.com/KodexBase/plantHealth_AI",
+  },
+  {
+    name: "EnergyMind",
+    type: "Consumo de energia",
+    icon: Zap,
+    problem: "Tornar o impacto energético de aparelhos domésticos mais compreensível para o usuário.",
+    solution: "Aplicação de acompanhamento e conscientização com foco em informação clara e tomada de decisão.",
+    stack: ["Flutter", "Dart", "Mobile"],
+    href: "https://github.com/KodexBase/EnergyMind",
+  },
 ];
 
 export default function Portfolio() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [sectionEl, setSectionEl] = useState<HTMLElement | null>(null);
-
   return (
-    <section ref={setSectionEl} className="py-28 px-6 relative overflow-hidden">
-      {/* ── Base ── */}
-      <div className="absolute inset-0" style={{ backgroundColor: "#0B0714" }} />
+    <section className="relative min-h-screen overflow-hidden bg-[#05020A] px-6 pb-24 pt-32" aria-labelledby="portfolio-title">
+      <div className="absolute left-1/2 top-0 h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-purple-brand/10 blur-[130px]" />
+      <div className="relative mx-auto max-w-6xl">
+        <motion.header initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-purple-accent">Portfólio verificável</p>
+          <h1 id="portfolio-title" className="mt-4 text-5xl font-black tracking-tight text-white sm:text-6xl">Problemas, soluções e código público.</h1>
+          <p className="mt-6 text-lg leading-relaxed text-text-muted">Uma seleção de projetos que mostra como pensamos produto e engenharia. Resultados comerciais só são publicados quando podem ser comprovados e autorizados pelo cliente.</p>
+        </motion.header>
 
-      {/* ── Section transitions ── */}
-      <div className="absolute top-0 left-0 right-0 h-32 pointer-events-none"
-        style={{ background: "linear-gradient(to bottom, #05020A, transparent)" }} />
-      <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-        style={{ background: "linear-gradient(to top, #05020A, transparent)" }} />
-
-      {/* ── Rich, discreet background system: grid · bloom · shapes · particles · noise · vignette ── */}
-      <SectionAmbient isInView={isInView} sectionEl={sectionEl} />
-
-      {/* ── Circuit code decoration — inline SVG, unique to this section ── */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice" style={{ opacity: 0.7 }}>
-        {/* Left rail */}
-        <path d="M40,80 L40,520" stroke="rgba(168,85,247,0.06)" strokeWidth="0.7" fill="none" />
-        <path d="M40,130 L100,130 L100,200 L160,200" stroke="rgba(168,85,247,0.07)" strokeWidth="0.7" fill="none" />
-        <path d="M40,280 L110,280 L110,340 L170,340" stroke="rgba(139,92,246,0.06)" strokeWidth="0.6" fill="none" />
-        <path d="M40,420 L90,420 L90,480 L150,480" stroke="rgba(168,85,247,0.06)" strokeWidth="0.6" fill="none" />
-        <circle cx="40" cy="130" r="2" fill="rgba(168,85,247,0.15)" />
-        <circle cx="40" cy="280" r="2" fill="rgba(168,85,247,0.12)" />
-        <circle cx="40" cy="420" r="1.5" fill="rgba(168,85,247,0.12)" />
-        {/* Right rail */}
-        <path d="M860,100 L860,500" stroke="rgba(168,85,247,0.05)" strokeWidth="0.7" fill="none" />
-        <path d="M860,160 L800,160 L800,220 L740,220" stroke="rgba(139,92,246,0.06)" strokeWidth="0.6" fill="none" />
-        <path d="M860,360 L790,360 L790,300 L730,300" stroke="rgba(168,85,247,0.06)" strokeWidth="0.6" fill="none" />
-        <circle cx="860" cy="160" r="2" fill="rgba(139,92,246,0.13)" />
-        <circle cx="860" cy="360" r="2" fill="rgba(168,85,247,0.13)" />
-      </svg>
-
-      {/* ── Top border ── */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[rgba(168,85,247,0.2)] to-transparent" />
-
-      <div className="relative z-10 max-w-4xl mx-auto">
-        {/* Header */}
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-14"
-        >
-          <span className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.2em] uppercase text-purple-accent mb-5">
-            <span className="w-8 h-px bg-gradient-to-r from-transparent to-purple-accent" />
-            Transparência em código
-            <span className="w-8 h-px bg-gradient-to-l from-transparent to-purple-accent" />
-          </span>
-          <h2 className="text-4xl sm:text-5xl font-bold mb-5">
-            Portfólio /{" "}
-            <span className="gradient-text">GitHub</span>
-          </h2>
-          <p className="text-text-muted max-w-2xl mx-auto text-lg leading-relaxed">
-            Acreditamos em transparência — veja o que construímos. Nosso GitHub é um reflexo direto da nossa qualidade técnica e dedicação ao código limpo.
-          </p>
-        </motion.div>
-
-        {/* GitHub showcase card */}
-        <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.97 }}
-          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="mb-6"
-        >
-          {/* Subtle infinite float */}
-          <div className="ambient-safe" style={{ animation: "float 7.5s ease-in-out infinite", willChange: "transform" }}>
-          <div className="group relative rounded-2xl overflow-hidden card-premium">
-          {/* Gradient top border */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-brand via-purple-accent to-[#c77dff] opacity-80 group-hover:opacity-100 transition-opacity" />
-
-          {/* Inner glow hover */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-            style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(168,85,247,0.08) 0%, transparent 60%)" }}
-          />
-
-          <div className="relative z-10 p-8">
-            {/* Top row */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
-              {/* GitHub logo */}
-              <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center">
-                <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-white">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                </svg>
-              </div>
-
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-xl font-bold text-white">github.com/KodexBase</h3>
-                  <span className="px-2 py-0.5 rounded-full text-[9px] font-bold border border-[rgba(168,85,247,0.3)] text-purple-accent" style={{ background: "rgba(168,85,247,0.08)" }}>
-                    PUBLIC
-                  </span>
+        <div className="mt-14 grid gap-6 md:grid-cols-2">
+          {projects.map((project, index) => {
+            const Icon = project.icon;
+            return (
+              <motion.article key={project.name} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.08 }} className="group rounded-3xl border border-white/[0.08] bg-[#0B0714] p-7 transition hover:-translate-y-1 hover:border-purple-accent/35 sm:p-8">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-purple-accent/25 bg-purple-accent/10 text-purple-300"><Icon className="h-5 w-5" /></div>
+                  <span className="rounded-full border border-white/[0.08] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-text-muted">{project.type}</span>
                 </div>
-                <p className="text-text-muted text-sm">Repositórios públicos, projetos reais, código de qualidade. Cada commit conta a nossa história.</p>
-              </div>
+                <h2 className="mt-7 text-2xl font-bold text-white">{project.name}</h2>
+                <div className="mt-6 grid gap-5 sm:grid-cols-2">
+                  <div><p className="text-[10px] font-bold uppercase tracking-widest text-purple-300">Problema</p><p className="mt-2 text-sm leading-relaxed text-text-muted">{project.problem}</p></div>
+                  <div><p className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">Solução</p><p className="mt-2 text-sm leading-relaxed text-text-muted">{project.solution}</p></div>
+                </div>
+                <div className="mt-7 flex flex-wrap gap-2 border-t border-white/[0.06] pt-5">{project.stack.map((item) => <span key={item} className="rounded-md bg-white/[0.04] px-2.5 py-1 text-xs text-gray-400">{item}</span>)}</div>
+                <a href={project.href} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white transition group-hover:text-purple-300"><Code2 className="h-4 w-4" /> Ver repositório <ArrowUpRight className="h-3.5 w-3.5" /></a>
+              </motion.article>
+            );
+          })}
+        </div>
 
-              {/* Highlights */}
-              <div className="flex gap-4 flex-shrink-0">
-                {highlights.map((h) => (
-                  <div key={h.label} className="text-center">
-                    <div className="text-lg font-bold gradient-text">{h.value}</div>
-                    <div className="text-[9px] text-text-muted">{h.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Languages */}
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-semibold text-text-muted">Linguagens predominantes</span>
-              </div>
-
-              {/* Bar */}
-              <div className="h-2 rounded-full overflow-hidden flex mb-3 bg-white/[0.05]">
-                {languages.map((lang, i) => (
-                  <motion.div
-                    key={lang.name}
-                    initial={{ width: 0 }}
-                    animate={isInView ? { width: `${lang.pct}%` } : {}}
-                    transition={{ duration: 0.8, delay: 0.4 + i * 0.1, ease: "easeOut" }}
-                    style={{ backgroundColor: lang.color }}
-                  />
-                ))}
-              </div>
-
-              {/* Legend */}
-              <div className="flex flex-wrap gap-4">
-                {languages.map((lang) => (
-                  <div key={lang.name} className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: lang.color }} />
-                    <span className="text-xs text-text-muted">{lang.name}</span>
-                    <span className="text-xs font-semibold text-white">{lang.pct}%</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          </div>
-          </div>
-        </motion.div>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.35 }}
-          className="flex justify-center"
-        >
-          <a
-            href="https://github.com/KodexBase"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl font-semibold text-white text-base glass border border-[rgba(170,120,255,0.2)] hover:border-[rgba(170,120,255,0.5)] transition-all duration-300 hover:shadow-glow-sm"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-            </svg>
-            Ver nosso GitHub
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4 group-hover:translate-x-0.5 transition-transform">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
-        </motion.div>
+        <div className="mt-12 rounded-2xl border border-purple-accent/20 bg-purple-accent/[0.06] p-6 text-center">
+          <p className="text-sm text-gray-300">Alguns trabalhos comerciais não aparecem publicamente por confidencialidade. Quer entender como uma solução semelhante se aplicaria à sua empresa?</p>
+          <a href="https://wa.me/5527997644821?text=Ol%C3%A1%2C%20vi%20o%20portf%C3%B3lio%20da%20KodexBase%20e%20quero%20conversar%20sobre%20um%20projeto." target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 font-semibold text-purple-300">Conversar sobre uma ideia <ArrowUpRight className="h-4 w-4" /></a>
+        </div>
       </div>
     </section>
   );

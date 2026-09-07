@@ -51,7 +51,7 @@ const steps = [
     number: "04",
     title: "Entrega & Suporte",
     description:
-      "Deploy completo, documentação e suporte pós-lançamento. Garantimos que sua solução está 100% pronta para usar com suporte dedicado após a entrega.",
+      "Fazemos o deploy, documentamos o necessário e validamos os critérios combinados antes da entrega. O suporte pós-lançamento é definido no escopo do projeto.",
     tags: ["Deploy", "Documentação", "Suporte"],
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5">
@@ -362,14 +362,14 @@ export default function Process() {
           >
             Nosso processo
           </motion.span>
-          <motion.h2
+          <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.08 }}
             className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4"
           >
             Como <span className="gradient-text">trabalhamos</span>
-          </motion.h2>
+          </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
